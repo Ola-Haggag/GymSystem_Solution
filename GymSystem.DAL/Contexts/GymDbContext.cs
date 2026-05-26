@@ -1,9 +1,13 @@
-﻿using GymSystem.Configurations;
-using GymSystem.Models;
+﻿using GymSystem.DAL.Configurations;
+using GymSystem.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace GymSystem.Contexts
+namespace GymSystem.DAL.Contexts
 {
     public class GymDbContext:DbContext
     {
@@ -16,6 +20,6 @@ namespace GymSystem.Contexts
         {
             modelBuilder.ApplyConfiguration<Plan>(new PlanConfigurations());
         }
-        public DbSet<Plan> Plans { get; set;}
+        public DbSet<Plan> Plans { get; set; }
     }
 }
