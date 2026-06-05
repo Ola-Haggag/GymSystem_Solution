@@ -10,43 +10,43 @@ using System.Threading.Tasks;
 
 namespace GymSystem.DAL.Repositories.Classes
 {
-    public class PlanRepository : IPlanRepository
+    public class PlanRepository :GenericRepository<Plan> ,IPlanRepository
     {
         private readonly GymDbContext dbContext;
-        public PlanRepository(GymDbContext _dbContext)
+        public PlanRepository(GymDbContext _dbContext):base(_dbContext)
         {
             dbContext = _dbContext;
         }
-        public async Task<IEnumerable<Plan>> GetAll(bool isTracked, CancellationToken ct=default)
-        {
-            var plans = isTracked ? dbContext.Plans : dbContext.Plans.AsNoTracking();
-            return await plans.ToListAsync();
-        }
+        //public async Task<IEnumerable<Plan>> GetAll(bool isTracked, CancellationToken ct=default)
+        //{
+        //    var plans = isTracked ? dbContext.Plans : dbContext.Plans.AsNoTracking();
+        //    return await plans.ToListAsync();
+        //}
 
-        public async Task<Plan?> GetById(int id, CancellationToken ct = default)
-        {
-            var plan = await dbContext.Plans.FirstOrDefaultAsync(p => p.Id == id);
-            return plan;
-        }
-        public void Add(Plan plan)
-        {
-            dbContext.Plans.Add(plan);
-        }
-        public void Update(Plan plan)
-        {
-            dbContext.Plans.Update(plan);
-        }
-        public void Delete(int id)
-        {
-            var product = dbContext.Plans.FirstOrDefault(p => p.Id == id);
-            if (product != null)
-            {
-                dbContext.Plans.Remove(product);
-            }
-        }
-        public async Task<int> CompleteAsync()
-        {
-            return await dbContext.SaveChangesAsync();
-        }
+        //public async Task<Plan?> GetById(int id, CancellationToken ct = default)
+        //{
+        //    var plan = await dbContext.Plans.FirstOrDefaultAsync(p => p.Id == id);
+        //    return plan;
+        //}
+        //public void Add(Plan plan)
+        //{
+        //    dbContext.Plans.Add(plan);
+        //}
+        //public void Update(Plan plan)
+        //{
+        //    dbContext.Plans.Update(plan);
+        //}
+        //public void Delete(int id)
+        //{
+        //    var product = dbContext.Plans.FirstOrDefault(p => p.Id == id);
+        //    if (product != null)
+        //    {
+        //        dbContext.Plans.Remove(product);
+        //    }
+        //}
+        //public async Task<int> CompleteAsync()
+        //{
+        //    return await dbContext.SaveChangesAsync();
+        //}
     }
 }
