@@ -13,7 +13,7 @@
 
     <link rel="stylesheet" href="~/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/style.css" />
-    <title>Power fitness | Home</title>
+    <title>Power fitness | @ViewData["Title"]</title>
 </head>
 
 
@@ -37,7 +37,7 @@
                             <a class="nav-link active px-3 py-2 mx-2 fw-bolder fs-5" aria-current="page" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link  px-3 py-2 mx-2 fw-bolder fs-5" aria-current="page" href="#">Members</a>
+                            <a class="nav-link  px-3 py-2 mx-2 fw-bolder fs-5" aria-current="page" asp-controller="member" asp-action="Index">Members</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link  px-3 py-2 mx-2 fw-bolder fs-5" aria-current="page" href="#">Trainers</a>
@@ -140,6 +140,12 @@
             </div>
         </div>
     </footer>
+
+
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/js/bootstrap.bundle.min.js"></script>
+@*     @RenderSection("ValidationScripts", required: false)
+ *@    @RenderSection("Scripts", required: false)
 </body>
 
 </html>
