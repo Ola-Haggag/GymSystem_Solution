@@ -17,7 +17,10 @@ namespace GymSystem.DAL.Repositories.Classes
         public UnitOfWork(GymDbContext dbContext) 
         {
             this.dbContext = dbContext;
+            SessionRepository = new SessionRepository(dbContext);
         }
+
+        public ISessionRepository SessionRepository { get; }
 
         public async Task<int> CompleteAsync()
         {

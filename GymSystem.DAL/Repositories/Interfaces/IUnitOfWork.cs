@@ -9,7 +9,10 @@ namespace GymSystem.DAL.Repositories.Interfaces
 {
     public interface IUnitOfWork
     {
-    public IGenericRepository<TEntity> GetRepository<TEntity>() where TEntity : BaseEntity, new();
         public Task<int> CompleteAsync();
+        public IGenericRepository<TEntity> GetRepository<TEntity>() where TEntity : BaseEntity, new();
+    
+     public ISessionRepository SessionRepository { get; }
+
     }
 }
