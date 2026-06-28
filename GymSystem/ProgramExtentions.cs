@@ -1,5 +1,7 @@
 ﻿using GymSystem.DAL.Contexts;
 using GymSystem.DAL.Data.DataSeeds;
+using GymSystem.DAL.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Configuration;
 
@@ -16,6 +18,9 @@ namespace GymSystem
             var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
             var Configurations = scope.ServiceProvider.GetRequiredService<ILogger<Configuration>>();
 
+            var RoleManger = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var UserManger = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+
             var Pending = await dbContext.Database.GetPendingMigrationsAsync();
 
             if (Pending.Any())
@@ -25,6 +30,7 @@ namespace GymSystem
             }
             var SeedPath = Path.Combine(app.Environment.ContentRootPath, "wwwroot", "Files");
             await GymDataSeed.SeedAsync(dbContext, SeedPath, logger);
+            await IdentityDataSeeding.SeedAsync(RoleManger, UserManger, logger);
         }
     }
 }

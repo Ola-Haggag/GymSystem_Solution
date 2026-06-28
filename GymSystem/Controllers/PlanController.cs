@@ -5,11 +5,13 @@ using GymSystem.DAL.Contexts;
 using GymSystem.DAL.Entities;
 using GymSystem.DAL.Repositories.Classes;
 using GymSystem.DAL.Repositories.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace GymSystem.Controllers
 {
+    [Authorize]
     public class PlanController : Controller
     {
         private readonly IPlanServices planServices;

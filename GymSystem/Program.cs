@@ -5,6 +5,7 @@ using GymSystem.DAL.Contexts;
 using GymSystem.DAL.Entities;
 using GymSystem.DAL.Repositories.Classes;
 using GymSystem.DAL.Repositories.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.CodeAnalysis.Options;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,6 +29,24 @@ namespace GymSystem
             builder.Services.AddScoped<IAnalyticsServices, AnalyticsServices>();
             builder.Services.AddScoped<IAttachementServices, AttachementServices>();
 
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(Options =>
+            {
+                //Options.Password.RequiredLength = 6;
+                //Options.Password.RequireLowercase = true;
+                //Options.Password.RequireUppercase = true;
+
+                Options.User.RequireUniqueEmail = false;
+                Options.Lockout.MaxFailedAccessAttempts = 5;
+                Options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(2);
+
+            }).AddEntityFrameworkStores<GymDbContext>();
+
+            builder.Services.ConfigureApplicationCookie(Options =>
+            {
+                Options.LoginPath = "/Account/Login";
+                Options.AccessDeniedPath = "/Account/AccessDenied";
+            });
+            
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddAutoMapper(m => m.AddProfile(new MappingProfile()));
             
