@@ -12,18 +12,21 @@ namespace GymSystem
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
             //builder.Services.AddScoped<IPlanRepository, PlanRepository>();
+            builder.Services.AddScoped<ISessionRepository, SessionRepository>();
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             builder.Services.AddScoped<IMemberServices, MemberServices>();
             builder.Services.AddScoped<ISessionServices, SessionServices>();
             builder.Services.AddScoped<IPlanServices, PlanServices>();
             builder.Services.AddScoped<ITrainerServices, TrainerServices>();
+            builder.Services.AddScoped<IAnalyticsServices, AnalyticsServices>();
+            builder.Services.AddScoped<IAttachementServices, AttachementServices>();
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddAutoMapper(m => m.AddProfile(new MappingProfile()));
@@ -34,7 +37,7 @@ namespace GymSystem
             });
 
             var app = builder.Build();
-
+            await app.MigrateAndSeedAsync();
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
@@ -48,6 +51,7 @@ namespace GymSystem
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseStaticFiles();

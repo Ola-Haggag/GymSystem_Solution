@@ -8,10 +8,13 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="16.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor" Version="2.3.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\GymSystem.DAL\GymSystem.DAL.csproj" />
   </ItemGroup>
-
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
 </Project>

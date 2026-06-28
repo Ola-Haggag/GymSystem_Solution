@@ -15,10 +15,12 @@ namespace GymSystem.BLL.Services.Classes
     public class MemberServices : IMemberServices
     {
         private readonly IUnitOfWork unitOfWork;
+        private readonly IAttachementServices attachementServices;
 
-        public MemberServices(IUnitOfWork unitOfWork)
+        public MemberServices(IUnitOfWork unitOfWork , IAttachementServices attachementServices)
         {
             this.unitOfWork = unitOfWork;
+            this.attachementServices = attachementServices;
         }
    
         //get
@@ -137,6 +139,14 @@ namespace GymSystem.BLL.Services.Classes
                 }
             };
             unitOfWork.GetRepository<Member>().Add(member);
+
+            var NewPhotoName = await attachementServices.UploadingAsync(model.PhotoFile.OpenReadStream(), model.PhotoFile.FileName, "MemberPictures", ct);
+            
+            if(string.IsNullOrEmpty(NewPhotoName))
+            {
+                return false;
+            }
+            member.Photo = NewPhotoName;
             var Result = await unitOfWork.CompleteAsync();
             return Result > 0;
         }
@@ -168,6 +178,7 @@ namespace GymSystem.BLL.Services.Classes
             var member = await unitOfWork.GetRepository<Member>().GetById(memberId , ct);
             if (member is null) { return false;}
 
+          
             var HasfutureSessions = await unitOfWork.GetRepository<Booking>().AnyAsync(
                 b=>b.MemberId == memberId && b.Session.EndDate > DateTime.Now);
 
@@ -175,7 +186,13 @@ namespace GymSystem.BLL.Services.Classes
             {
                 return false;
             }
+
             unitOfWork.GetRepository<Member>().Delete(memberId);
+
+            if (member.Photo is not null)
+            {
+                var IsPhotoDeleted = attachementServices.Delete(member.Photo, "MemberPictures");
+            }
 
             var result = await unitOfWork.CompleteAsync();
             return result > 0; 
